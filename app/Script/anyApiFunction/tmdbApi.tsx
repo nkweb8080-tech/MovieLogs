@@ -61,3 +61,33 @@ export async function searchMovies(
 
     return (await response.json()) as TmdbSearchResponse;
 }
+
+//映画詳細
+export async function getMovieDetail(
+  tmdbMovieId: number,
+): Promise<TmdbMovie> {
+  const response = await fetch(
+    `${process.env.TMDB_API_BASE_URL}movie/${tmdbMovieId}?language=ja-JP`,
+    {
+      headers: {
+        Authorization: checkAuthorization(),
+        Accept: "application/json",
+      },
+      next: {
+        revalidate: 86400,
+      },
+    },
+  );
+
+  console.log(response)
+
+  if (response.status === 404) {
+    throw new Error("映画が見つかりません");
+  }
+
+  if (!response.ok) {
+    throw new Error("映画情報の取得に失敗しました");
+  }
+
+  return (await response.json()) as TmdbMovie;
+}

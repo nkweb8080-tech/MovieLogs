@@ -63,6 +63,7 @@ export default async function MovieSearchPage({
                 alt={`${movie.title}のポスター`}
                 width={500}
                 height={750}
+                loading="eager"
                 className="aspect-[2/3] w-full object-cover"
               />
             ) : (
