@@ -1,15 +1,18 @@
-import Image from "next/image";
-import Link from "next/link";
-import { searchMovies } from "../../Script/anyApiFunction/tmdbApi";
+import Image from "next/image"
+import Link from "next/link"
+import Modal from "../../Common/ModalComponents"
+import { searchMovies } from "../../Script/anyApiFunction/tmdbApi"
 import type { SearchMovieProps } from "../../Types/SearchPageType"
 
 export default async function MovieSearchPage({
   searchParams,
 }: SearchMovieProps) {
+  //検索処理用パラメータ
   const params = await searchParams;
   const query = params.query?.trim() ?? "";
   const page = Number(params.page ?? "1");
 
+  //検索処理
   const result = query
     ? await searchMovies(query, page)
     : null;
@@ -81,12 +84,7 @@ export default async function MovieSearchPage({
                   : "公開年不明"}
               </p>
 
-              <Link
-                href={`/movies/${movie.id}`}
-                className="mt-4 inline-block underline"
-              >
-                詳細を見る
-              </Link>
+              <Link href={`?query=${query}&movieId=${movie.id}`}>詳細を見る</Link>
             </div>
           </article>
         ))}
