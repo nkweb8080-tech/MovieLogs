@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
-import { searchMovies } from "../../Script/anyApiFunction/tmdbApi"
-import type { SearchMovieProps } from "../../Types/SearchPageType"
+import { searchMovies } from "@/app/Script/anyApiFunction/tmdbApi"
+import type { SearchMovieProps } from "@/app/Types/SearchPageType"
 
 export default async function MovieSearchPage({
   searchParams,

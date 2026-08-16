@@ -1,5 +1,5 @@
-import { API_TOKEN_ERROR,SEARCH_ERROR_MOVIE } from "../../Common/Message"
-import type { TmdbMovie, TmdbSearchResponse } from "../../Types/tmdbType";
+import { API_TOKEN_ERROR,SEARCH_ERROR_MOVIE } from "@/app/Common/Message"
+import type { TmdbMovie, TmdbSearchResponse } from "@/app/Types/tmdbType";
 
 //認証確認
 function checkAuthorization(): string {

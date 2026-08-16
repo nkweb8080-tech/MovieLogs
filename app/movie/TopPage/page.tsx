@@ -1,7 +1,7 @@
-import Tab from '../../Common/TabComponents'
-import MyPage from '../MyPage/page'
-import SeachPage from '../SearchPage/page'
-import type { SearchMovieProps } from "../../Types/SearchPageType"
+import Tab from '@/app/Common/TabComponents'
+import MyPage from '@/app/movie/MyPage/page'
+import SeachPage from '@/app/movie/SearchPage/page'
+import type { SearchMovieProps } from "@/app/Types/SearchPageType"
 
 export default async function TopPage({
   searchParams,

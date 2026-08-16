@@ -1,15 +1,18 @@
-//一旦中止
-//--------
-export type ModalProps = {
-  showFlag: boolean;
-  movieId?:string;
+//中止
+type ModalProps = {
+  modalParams: Promise<{
+    movieId?:number;
+    modal?:boolean;
+  }>
 };
 
 //モーダル
-export default function Modal({
-  showFlag,
+export default async function Modal({
+  modalParams
 }: ModalProps) {
-  if (!showFlag) {
+  const param = await modalParams
+
+  if (!param.modal) {
     return null;
   }
 
