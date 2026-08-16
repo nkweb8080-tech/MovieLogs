@@ -62,7 +62,7 @@ export async function getMovieDetail(
   tmdbMovieId: number,
 ): Promise<TmdbMovie> {
   const response = await fetch(
-    `${process.env.TMDB_API_BASE_URL}movie/${tmdbMovieId}?language=ja-JP`,
+    `${process.env.TMDB_API_BASE_URL}/movie/${tmdbMovieId}?language=ja-JP`,
     {
       headers: {
         Authorization: checkAuthorization(),
@@ -73,9 +73,7 @@ export async function getMovieDetail(
       },
     },
   );
-
-  console.log(response)
-
+  
   if (response.status === 404) {
     throw new Error("映画が見つかりません");
   }

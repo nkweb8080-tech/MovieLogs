@@ -1,3 +1,5 @@
+//一旦中止
+//--------
 export type ModalProps = {
   showFlag: boolean;
   movieId?:string;

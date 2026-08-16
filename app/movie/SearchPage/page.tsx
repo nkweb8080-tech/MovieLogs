@@ -1,6 +1,5 @@
 import Image from "next/image"
 import Link from "next/link"
-import Modal from "../../Common/ModalComponents"
 import { searchMovies } from "../../Script/anyApiFunction/tmdbApi"
 import type { SearchMovieProps } from "../../Types/SearchPageType"
 
@@ -84,7 +83,7 @@ export default async function MovieSearchPage({
                   : "公開年不明"}
               </p>
 
-              <Link href={`?query=${query}&movieId=${movie.id}`}>詳細を見る</Link>
+              <Link href={`/movie/movieDetailPage/${movie.id}`}>詳細を見る</Link>
             </div>
           </article>
         ))}
