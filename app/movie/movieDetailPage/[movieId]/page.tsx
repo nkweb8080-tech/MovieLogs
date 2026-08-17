@@ -1,7 +1,9 @@
 import Image from "next/image"
-import Link from "next/link"
-import BackButton from "@/app/Common/PageBackButton";
+import { cookies } from "next/headers"
+import { toggleModal } from "@/app/Common/CookieAction"
 import { getMovieDetail } from "@/app/Script/anyApiFunction/tmdbApi"
+import BackButton from "@/app/Common/PageBackButton"
+import RegistComponent from "@/app/Common/RagistComponents"
 
 type MovieProps = {
   params: Promise<{
@@ -12,7 +14,10 @@ type MovieProps = {
 export default async function MovieDetailPage({
     params,
 }:MovieProps){
-  const { movieId } = await params;
+  const cookieStore = await cookies()
+  const { movieId } = await params
+
+  const showFlag = cookieStore.get("showModal")?.value === "true"
 
   //詳細情報検索処理
   const result = movieId
@@ -40,7 +45,9 @@ export default async function MovieDetailPage({
             )}
 
             <div>
-              <Link href={`/movie/RegistPage/${movieId}`}>鑑賞記録を追加</Link>
+              <form action={toggleModal}>
+                <button type="submit">{showFlag ? "閉じる" : "鑑賞記録を追加"}</button>
+              </form>
               <p>タイトル：{result?.title}</p>
               {result?.original_title && result?.original_title !== result?.title ? (
                 <p>原題　　：{result?.original_title}</p>
@@ -60,6 +67,11 @@ export default async function MovieDetailPage({
                 <></>
               )}
             </div>
+              {showFlag && (
+                <div>
+                  <RegistComponent/>
+                </div>
+              )}
         </div>
     </main>
   )
