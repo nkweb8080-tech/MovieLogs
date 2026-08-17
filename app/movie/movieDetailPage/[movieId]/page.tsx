@@ -2,6 +2,7 @@ import Image from "next/image"
 import { cookies } from "next/headers"
 import { toggleModal } from "@/app/Common/CookieAction"
 import { getMovieDetail } from "@/app/Script/anyApiFunction/tmdbApi"
+import GoToButton from "@/app/Common/GoToPageButton"
 import BackButton from "@/app/Common/PageBackButton"
 import RegistComponent from "@/app/Common/RagistComponents"
 
@@ -27,6 +28,7 @@ export default async function MovieDetailPage({
   return (
     <main className="mx-auto max-w-5xl p-6">
         <BackButton/>
+        <GoToButton label="ログイン" goToPath='/movie/LoginPage'></GoToButton>
         <h1>映画詳細</h1>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {result?.poster_path ? (
@@ -68,7 +70,7 @@ export default async function MovieDetailPage({
               )}
             </div>
               {showFlag && (
-                <div>
+                <div className="width:400px">
                   <RegistComponent/>
                 </div>
               )}
