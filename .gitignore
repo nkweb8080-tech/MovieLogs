@@ -48,6 +48,9 @@ next-env.d.ts
 .claude/
 .windsurf/
 
+*.sql
+*.toml
+
 AGENTS.md
 CLAUDE.md
 skills-lock.json
