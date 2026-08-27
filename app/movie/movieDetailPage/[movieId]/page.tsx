@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { cookies } from "next/headers"
-import { toggleModal } from "@/app/Common/CookieAction"
+import { setToggleModal } from "@/app/Script/cookieAction/cookieAction"
 import { getMovieDetail } from "@/app/Script/anyApiFunction/tmdbApi"
 import GoToButton from "@/app/Common/GoToPageButton"
 import BackButton from "@/app/Common/PageBackButton"
@@ -47,7 +47,7 @@ export default async function MovieDetailPage({
             )}
 
             <div>
-              <form action={toggleModal}>
+              <form action={setToggleModal}>
                 <button type="submit">{showFlag ? "閉じる" : "鑑賞記録を追加"}</button>
               </form>
               <p>タイトル：{result?.title}</p>
