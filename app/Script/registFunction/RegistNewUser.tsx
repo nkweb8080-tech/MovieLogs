@@ -2,26 +2,32 @@
 
 import bcrypt from "bcryptjs"
 import prisma from "@/app/Script/prosmaAction/prismaAction"
+import { Message } from "@/app/Common/Message"
 
-export async function registerUser(formData: FormData) {
-  const name = String(formData.get("name") ?? "").trim();
-  const email = String(formData.get("email") ?? "")
-    .trim()
-    .toLowerCase();
+export async function registUser(formData: FormData) {
+  try{
+  const email = String(formData.get("email") ?? "").trim().toLowerCase()
+  const name = email
+  const password = String(formData.get("password") ?? "")
+  const checkPassword = String(formData.get("checkPassword") ?? "")
 
-  const password = String(
-    formData.get("password") ?? ""
-  );
+  let date = new Date();
+  const createdAt = date
+  const updatedAt = date
 
   // 必須チェック
-  if (!name || !email || !password) {
-    throw new Error("すべて入力してください");
+  if (!email || !password !|| !checkPassword) {
+    throw new Error(Message.VALID.NOT_INPUT_ALL)
   }
 
+  //パスワード8ケタ未満
   if (password.length < 8) {
-    throw new Error(
-      "パスワードは8文字以上にしてください"
-    );
+    throw new Error(Message.VALID.ERROR_KETA_PASSWORD)
+  }
+
+  //確認用と不一致
+  if(password !== checkPassword){
+    throw new Error(Message.VALID.ERROR_CHECK_PASSWORD)
   }
 
   // 既に登録済みか確認(SELECT)
@@ -32,10 +38,9 @@ export async function registerUser(formData: FormData) {
       },
     });
 
+  //メール登録済み
   if (existingUser) {
-    throw new Error(
-      "このメールアドレスは既に登録されています"
-    );
+    throw new Error(Message.VALID.ERROR_EXIST_EMAIL);
   }
 
   // パスワードをハッシュ化
@@ -50,12 +55,16 @@ export async function registerUser(formData: FormData) {
       name,
       email,
       passwordHash,
+      createdAt,
+      updatedAt
     },
   });
-
-  return {
-    id: user.id,
-    name: user.name,
-    email: user.email,
-  };
+  }
+  catch(e)
+  {
+    if (e instanceof Error) {
+      console.error(e.message);
+    }
+    throw new Error(Message.COMMON.SYSTEM_ERROR);
+  }
 }

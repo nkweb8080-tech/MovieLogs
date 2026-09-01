@@ -1,4 +1,4 @@
-import { API_TOKEN_ERROR,SEARCH_ERROR_MOVIE } from "@/app/Common/Message"
+import { Message } from "@/app/Common/Message"
 import type { TmdbMovie, TmdbSearchResponse } from "@/app/Types/tmdbType";
 
 //認証確認
@@ -6,7 +6,7 @@ function checkAuthorization(): string {
     //トークン
     const tmdbApiToken = process.env.TMDB_ACCESS_TOKEN
 
-    if(!tmdbApiToken) throw new Error(API_TOKEN_ERROR)
+    if(!tmdbApiToken) throw new Error(Message.SEARCH.API_TOKEN_ERROR)
 
     return `Bearer ${tmdbApiToken}`
 }
@@ -52,7 +52,7 @@ export async function searchMovies(
         },
     );
 
-    if (!response.ok) throw new Error (`${SEARCH_ERROR_MOVIE} status=${response.status}`)
+    if (!response.ok) throw new Error (`${Message.SEARCH.FAIL_SEARCH_MOVIE} status=${response.status}`)
 
     return (await response.json()) as TmdbSearchResponse;
 }
@@ -75,11 +75,11 @@ export async function getMovieDetail(
   );
   
   if (response.status === 404) {
-    throw new Error("映画が見つかりません");
+    throw new Error(Message.SEARCH.NOT_FOUND_MOVIE);
   }
 
   if (!response.ok) {
-    throw new Error("映画情報の取得に失敗しました");
+    throw new Error(Message.SEARCH.FAIL_GET_MOVIEINFO);
   }
 
   return (await response.json()) as TmdbMovie;

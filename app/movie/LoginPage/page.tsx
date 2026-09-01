@@ -1,6 +1,7 @@
 import GoToButton from '@/app/Common/GoToPageButton'
 import BackButton from "@/app/Common/PageBackButton"
 
+
 export default async function LoginPage(){
     return (
         <main>
@@ -8,7 +9,7 @@ export default async function LoginPage(){
             <h1>ログインページ</h1>
             <form>
                 <p>ユーザID</p>
-                <input type="text" name="userId" placeholder="ユーザID"/>
+                <input type="text" name="email" placeholder="sample@gamil.com"/>
                 <p>パスワード</p>
                 <input type="text" name="password" placeholder="パスワード"/>
                 <button type="submit">ログイン</button>

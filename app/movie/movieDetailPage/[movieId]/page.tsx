@@ -4,7 +4,7 @@ import { setToggleModal } from "@/app/Script/cookieAction/cookieAction"
 import { getMovieDetail } from "@/app/Script/anyApiFunction/tmdbApi"
 import GoToButton from "@/app/Common/GoToPageButton"
 import BackButton from "@/app/Common/PageBackButton"
-import RegistComponent from "@/app/Common/RagistComponents"
+import RegistComponent from "@/app/Script/registFunction/RagistComponents"
 
 type MovieProps = {
   params: Promise<{
