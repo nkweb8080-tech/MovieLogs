@@ -1,13 +1,13 @@
 import GoToButton from '@/app/Common/GoToPageButton'
 import BackButton from "@/app/Common/PageBackButton"
-
+import { Login } from "@/app/Script/prismaFunction/LoginFunction"
 
 export default async function LoginPage(){
     return (
         <main>
             <BackButton/>
             <h1>ログインページ</h1>
-            <form>
+            <form action={ Login }>
                 <p>ユーザID</p>
                 <input type="text" name="email" placeholder="sample@gamil.com"/>
                 <p>パスワード</p>

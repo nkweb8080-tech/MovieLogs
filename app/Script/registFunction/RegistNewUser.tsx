@@ -1,8 +1,8 @@
 "use server"
-
 import bcrypt from "bcryptjs"
 import prisma from "@/app/Script/prosmaAction/prismaAction"
 import { Message } from "@/app/Common/Message"
+import { redirect } from "next/navigation"
 
 export async function registUser(formData: FormData) {
   try{
@@ -16,7 +16,7 @@ export async function registUser(formData: FormData) {
   const updatedAt = date
 
   // 必須チェック
-  if (!email || !password !|| !checkPassword) {
+  if (!email || !password || !checkPassword) {
     throw new Error(Message.VALID.NOT_INPUT_ALL)
   }
 
@@ -59,6 +59,8 @@ export async function registUser(formData: FormData) {
       updatedAt
     },
   });
+
+  redirect("/movie/LoginPage")
   }
   catch(e)
   {
