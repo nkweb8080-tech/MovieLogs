@@ -17,6 +17,11 @@ export async function setToggleModal() {
   }
 }
 
+export async function getUserInfo(){
+  const cookieStore = await cookies()
+  return cookieStore.get("isLogin")?.value
+}
+
 //ログイン状況を保持
 export async function setLoginCookie(user:string) {
   const cookieStore = await cookies()

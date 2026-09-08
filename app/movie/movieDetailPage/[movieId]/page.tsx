@@ -69,9 +69,9 @@ export default async function MovieDetailPage({
                 <></>
               )}
             </div>
-              {showFlag && (
+              {showFlag && result &&(
                 <div className="width:400px">
-                  <RegistComponent/>
+                  <RegistComponent movieId={movieId}/>
                 </div>
               )}
         </div>
