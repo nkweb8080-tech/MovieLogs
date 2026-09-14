@@ -4,7 +4,7 @@ type RegistComponentProps = {
     movieId: number;
 }
 
-export default async function RegistPage({movieId}:RegistComponentProps){
+export default async function RegistComponent({movieId}:RegistComponentProps){
 
   return(
     <main className="mx-auto max-w-5xl p-6">

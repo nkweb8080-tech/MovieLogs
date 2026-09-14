@@ -8,7 +8,8 @@ export async function registMovieLog(formData: FormData) {
         const userId = String(await getUserInfo())
         const movieId = String(formData.get("movieId"))
         const logId = movieId + userId
-        const watchedAt = Date(formData.get("watchDate"))
+        const watchDate = String(formData.get("watchDate"))
+        const watchedAt = new Date(watchDate)
         const hyouka = Number(formData.get("hyouka"))
         const comment = String(formData.get("comment"))
         let date = new Date();
