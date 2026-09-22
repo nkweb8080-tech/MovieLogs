@@ -42,6 +42,7 @@ model MovieRecord {
   id              String   @id @default(cuid())
   userId          String
   movieId         String
+  title           String
   watchedAt       DateTime
   rating          Int
   review          String?

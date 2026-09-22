@@ -73,7 +73,7 @@ export default async function MovieDetailPage({
             </div>
               {showFlag && result &&(
                 <div className="width:400px">
-                  <RegistComponent userId={userId} movieId={movieId}/>
+                  <RegistComponent userId={userId} movieId={movieId} title={result?.title}/>
                 </div>
               )}
         </div>

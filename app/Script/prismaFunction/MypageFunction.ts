@@ -5,18 +5,16 @@ import { Message } from "@/app/Common/Message"
 export async function getMovieLogs() {
     const userId = String(await getUserInfo())
 
-    if(userId)return null;
+    if(!userId)return null;
 
     // 鑑賞記録取得
-    const movieRecord = 
+    const movieLogs = 
         await prisma.movieRecord.findMany({
             where: {
             userId,
             deleteFlg:false
             },
     });
-
-    const movieLogs = movieRecord
 
     return movieLogs
 }

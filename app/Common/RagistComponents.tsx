@@ -4,9 +4,10 @@ import { registMovieLog } from "@/app/Script/registFunction/RegistMovieLogs"
 type RegistComponentProps = {
     userId: string
     movieId: number
+    title: string
 }
 
-export default async function RegistComponent({userId,movieId}:RegistComponentProps){
+export default async function RegistComponent({userId,movieId,title}:RegistComponentProps){
 
   return(
     <main className="mx-auto max-w-5xl p-6">
@@ -29,7 +30,8 @@ export default async function RegistComponent({userId,movieId}:RegistComponentPr
                     cols={40}
                     rows={4}/>
                 <input type="hidden" name="userId" value={userId} />    
-                <input type="hidden" name="movieId" value={movieId} />    
+                <input type="hidden" name="movieId" value={movieId} />
+                <input type="hidden" name="title" value={title} /> 
                 <button>登録</button>
             </form>
         </div>
