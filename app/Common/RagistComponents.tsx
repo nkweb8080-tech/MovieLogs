@@ -1,16 +1,18 @@
 //日付入力が納得できない
+import { registMovieLog } from "@/app/Script/registFunction/RegistMovieLogs"
 
 type RegistComponentProps = {
-    movieId: number;
+    userId: string
+    movieId: number
 }
 
-export default async function RegistComponent({movieId}:RegistComponentProps){
+export default async function RegistComponent({userId,movieId}:RegistComponentProps){
 
   return(
     <main className="mx-auto max-w-5xl p-6">
         <div>
             <h1>鑑賞記録</h1>
-            <form >
+            <form action={registMovieLog}>
                 <p>鑑賞日</p>
                 <input type="date" name="watchDate"/>
                 <p>評価</p>
@@ -26,6 +28,7 @@ export default async function RegistComponent({movieId}:RegistComponentProps){
                     placeholder="コメントを記入"
                     cols={40}
                     rows={4}/>
+                <input type="hidden" name="userId" value={userId} />    
                 <input type="hidden" name="movieId" value={movieId} />    
                 <button>登録</button>
             </form>

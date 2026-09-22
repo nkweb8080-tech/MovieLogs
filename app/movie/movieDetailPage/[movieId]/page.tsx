@@ -1,5 +1,6 @@
 import Image from "next/image"
 import { cookies } from "next/headers"
+import { getUserInfo } from '@/app/Script/cookieAction/cookieAction'
 import { setToggleModal } from "@/app/Script/cookieAction/cookieAction"
 import { getMovieDetail } from "@/app/Script/anyApiFunction/tmdbApi"
 import GoToButton from "@/app/Common/GoToPageButton"
@@ -19,6 +20,7 @@ export default async function MovieDetailPage({
   const { movieId } = await params
 
   const showFlag = cookieStore.get("showModal")?.value === "true"
+  const userId = String(await getUserInfo())
 
   //詳細情報検索処理
   const result = movieId
@@ -71,7 +73,7 @@ export default async function MovieDetailPage({
             </div>
               {showFlag && result &&(
                 <div className="width:400px">
-                  <RegistComponent movieId={movieId}/>
+                  <RegistComponent userId={userId} movieId={movieId}/>
                 </div>
               )}
         </div>
