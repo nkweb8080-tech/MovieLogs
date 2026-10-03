@@ -3,6 +3,7 @@ import { cookies } from "next/headers"
 import { getUserInfo } from '@/app/Script/cookieAction/cookieAction'
 import { setToggleModal } from "@/app/Script/cookieAction/cookieAction"
 import { getMovieDetail } from "@/app/Script/anyApiFunction/tmdbApi"
+import MovieLogsComponent from "@/app/Common/MovieLogsComponents"
 import GoToButton from "@/app/Common/GoToPageButton"
 import BackButton from "@/app/Common/PageBackButton"
 import RegistComponent from "@/app/Common/RagistComponents"
@@ -47,7 +48,6 @@ export default async function MovieDetailPage({
                 画像なし
               </div>
             )}
-
             <div>
               <form action={setToggleModal}>
                 <button type="submit">{showFlag ? "閉じる" : "鑑賞記録を追加"}</button>
@@ -70,6 +70,9 @@ export default async function MovieDetailPage({
               ) : (
                 <></>
               )}
+            </div>
+            <div>
+              <MovieLogsComponent mode="MovieDetailPage" movieId={String(movieId)}/>
             </div>
               {showFlag && result &&(
                 <div className="width:400px">

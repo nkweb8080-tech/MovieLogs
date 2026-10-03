@@ -17,12 +17,24 @@ export async function setToggleModal() {
   }
 }
 
+//ユーザ情報の取得処理
 export async function getUserInfo(){
   const cookieStore = await cookies()
-  return cookieStore.get("isLogin")?.value
+  const isLogin = cookieStore.get("isLogin")?.value? cookieStore.get("isLogin")?.value : ""
+  return isLogin
 }
 
-//ログイン状況を保持
+export async function setEditMode(formData: FormData) {
+  const cookieStore = await cookies()
+  const currentEditId = cookieStore.get("editId")?.value
+  const editId = String(formData.get("editId"))
+  const isEdit = currentEditId != editId
+
+  cookieStore.set( "editId", String(editId))
+  cookieStore.set( "isEdit", String(isEdit))
+}
+
+//ログイン状況を保持取得
 export async function setLoginCookie(user:string) {
   const cookieStore = await cookies()
 
