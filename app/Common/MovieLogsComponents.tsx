@@ -1,8 +1,9 @@
 //鑑賞記録の表示方法はいくつか候補があるため、コンポーネントで分けておく
 import Link from "next/link";
 import { cookies } from "next/headers"
-import { getUserInfo,setEditMode } from '@/app/Script/cookieAction/cookieAction'
+import { getUserInfo,setEditMode,setDeleteMode } from '@/app/Script/cookieAction/cookieAction'
 import { getMovieLogs } from "@/app/Script/prismaFunction/MypageFunction"
+import { updateMovieLog,deleteMovieLog } from "@/app/Script/registFunction/RegistMovieLogs"
 
 type MovieLogsComponentProps = {
   mode : string,
@@ -15,6 +16,7 @@ export default async function MovieLogsComponent({mode,movieId}:MovieLogsCompone
   const logs = (mode=="MyPage")? await getMovieLogs(userId,"") : await getMovieLogs(userId,movieId)
   const editId = cookieStore.get("editId")?.value
   const isEdit = cookieStore.get("isEdit")?.value === "true"
+  const isDelete = cookieStore.get("isDelete")?.value === "true"
 
   if(mode=="MyPage")
   {
@@ -58,9 +60,9 @@ export default async function MovieLogsComponent({mode,movieId}:MovieLogsCompone
             <div className="p-4">
               {isEdit && editId==log.id ?(
                 <div>
-                  <form>
+                  <form action={updateMovieLog}>
                     <span>鑑賞日：</span>
-                    <input type="date" name="watchDate"/>
+                    <input type="date" name="watchDate" defaultValue={(log.watchedAt.toISOString().split('T')[0])}/>
                     <p>評価：{log.rating}</p>
                     <input 
                       type="range"
@@ -68,25 +70,40 @@ export default async function MovieLogsComponent({mode,movieId}:MovieLogsCompone
                       min="1"
                       max="10"
                       id="HyoukaSlider"
-                      readOnly
-                      value={log.rating}/>
+                      defaultValue={log.rating}
+                      />
                     <p>コメント：</p>
                     <textarea 
                         name="comment"
                         placeholder="コメントを記入"
                         cols={40}
                         rows={4}
-                        readOnly
-                        value={String(log.review)}/>
+                        defaultValue={String(log.review)}/>
                     <br/>
                     <button type="submit">更新</button>
                     <input type="hidden" name="movieLogId" value={log.id} />
+                    <input type="hidden" name="movieId" value={log.movieId} />
                   </form>
-                  <form>
+                  <form action={setDeleteMode}>
                     <button type="submit">削除</button>
-                    <input type="hidden" name="movieLogId" value={log.id} />
                   </form>
-                  <form action={setEditMode}>
+                  {isDelete ?(
+                    <div>
+                      <p>この鑑賞記録を削除しますか？</p>
+                      <form action={deleteMovieLog}>
+                        <button type="submit">はい</button>
+                        <input type="hidden" name="movieLogId" value={log.id} />
+                        <input type="hidden" name="movieId" value={log.movieId} />
+                      </form>
+                      <form action={setDeleteMode}>
+                        <button type="submit" >戻る</button>
+                      </form>
+                    </div>
+                  ):(
+                  <></>
+                  )
+                  }
+                    <form action={setEditMode}>
                       <button type="submit">取消</button>
                       <input type="hidden" name="editId" value="" />
                     </form>
@@ -94,7 +111,6 @@ export default async function MovieLogsComponent({mode,movieId}:MovieLogsCompone
               ) : (
                 <div>
                   <div>
-                    <p>{log.id}</p>
                     <p>鑑賞日：{log.watchedAt.toISOString().split('T')[0]}</p>
                     <p>評価：{log.rating}</p>
                     <p>コメント：<br/>{String(log.review)}</p>

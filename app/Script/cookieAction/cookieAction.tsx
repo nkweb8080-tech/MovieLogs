@@ -24,6 +24,14 @@ export async function getUserInfo(){
   return isLogin
 }
 
+//鑑賞記録編集後、編集モードを終了させるため、Cookie情報を更新
+export async function resetEditMode() {
+  const cookieStore = await cookies()
+  cookieStore.set( "editId", "")
+  cookieStore.set( "isEdit", "false")
+}
+
+//編集モードをCookie情報を登録することで制御
 export async function setEditMode(formData: FormData) {
   const cookieStore = await cookies()
   const currentEditId = cookieStore.get("editId")?.value
@@ -32,6 +40,14 @@ export async function setEditMode(formData: FormData) {
 
   cookieStore.set( "editId", String(editId))
   cookieStore.set( "isEdit", String(isEdit))
+}
+
+//削除モード制御
+export async function setDeleteMode() {
+  const cookieStore = await cookies()
+  const isdelete = cookieStore.get("isDelete")?.value === "true"
+
+  cookieStore.set( "isDelete", String(!isdelete))
 }
 
 //ログイン状況を保持取得

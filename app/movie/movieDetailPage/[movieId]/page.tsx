@@ -49,9 +49,6 @@ export default async function MovieDetailPage({
               </div>
             )}
             <div>
-              <form action={setToggleModal}>
-                <button type="submit">{showFlag ? "閉じる" : "鑑賞記録を追加"}</button>
-              </form>
               <p>タイトル：{result?.title}</p>
               {result?.original_title && result?.original_title !== result?.title ? (
                 <p>原題　　：{result?.original_title}</p>
@@ -70,15 +67,18 @@ export default async function MovieDetailPage({
               ) : (
                 <></>
               )}
-            </div>
-            <div>
-              <MovieLogsComponent mode="MovieDetailPage" movieId={String(movieId)}/>
-            </div>
+              <form action={setToggleModal}>
+                <button type="submit">{showFlag ? "閉じる" : "鑑賞記録を追加"}</button>
+              </form>
               {showFlag && result &&(
                 <div className="width:400px">
                   <RegistComponent userId={userId} movieId={movieId} title={result?.title}/>
                 </div>
               )}
+            </div>
+            <div>
+              <MovieLogsComponent mode="MovieDetailPage" movieId={String(movieId)}/>
+            </div>
         </div>
     </main>
   )

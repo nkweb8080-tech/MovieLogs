@@ -12,7 +12,7 @@ export default async function RegistComponent({userId,movieId,title}:RegistCompo
   return(
     <main className="mx-auto max-w-5xl p-6">
         <div>
-            <h1>鑑賞記録</h1>
+            <h1>鑑賞記録を登録</h1>
             <form action={registMovieLog}>
                 <p>鑑賞日</p>
                 <input type="date" name="watchDate"/>
@@ -32,6 +32,7 @@ export default async function RegistComponent({userId,movieId,title}:RegistCompo
                 <input type="hidden" name="userId" value={userId} />    
                 <input type="hidden" name="movieId" value={movieId} />
                 <input type="hidden" name="title" value={title} /> 
+                <br/>
                 <button>登録</button>
             </form>
         </div>
