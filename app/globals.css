@@ -1,26 +1,299 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   [編集] ダークモードの切り替え方式を定義
+   - Tailwind v4 標準の @custom-variant のみを使用（追加パッケージなし）
+   - html 要素に .dark が付いているときだけ dark: ユーティリティが有効になる
+     クラスベース方式へ変更（OS 設定のみに依存しないトグルを実現するため）
+   ========================================================================== */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ==========================================================================
+   [編集] 白基調モダンデザイン用のカラートークン（ライトテーマ）
+   - 以前は背景 #ffffff / 文字 #171717 の2色のみだったため、
+     面・境界線・補助文字・アクセント色までトークン化して統一感を持たせた
+   ========================================================================== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+
+  --background: #f6f7fb;
+  --surface: #ffffff;
+  --surface-2: #f1f5f9;
+  --foreground: #0f172a;
+  --muted: #64748b;
+  --line: #e4e8f0;
+
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-foreground: #ffffff;
+
+  --danger: #dc2626;
+  --danger-hover: #b91c1c;
+  --danger-foreground: #ffffff;
+
+  --ring: rgb(79 70 229 / 0.28);
+  --shadow-sm: 0 1px 2px rgb(15 23 42 / 0.05);
+  --shadow-md: 0 1px 2px rgb(15 23 42 / 0.04), 0 10px 30px -20px rgb(15 23 42 / 0.35);
+  --shadow-lg: 0 2px 4px rgb(15 23 42 / 0.04), 0 20px 50px -24px rgb(15 23 42 / 0.4);
 }
 
+/* ==========================================================================
+   [編集] ダークテーマのトークン上書き
+   - 真っ黒ではなく青みがかったダークグレーにして、白基調デザインと
+     同じ構造（面・境界線・アクセント）をそのまま保てるようにした
+   ========================================================================== */
+.dark {
+  color-scheme: dark;
+
+  --background: #0b1020;
+  --surface: #151c2e;
+  --surface-2: #1d2639;
+  --foreground: #e6ebf4;
+  --muted: #94a3b8;
+  --line: #2a3347;
+
+  --primary: #818cf8;
+  --primary-hover: #a5b4fc;
+  --primary-foreground: #0b1020;
+
+  --danger: #f87171;
+  --danger-hover: #fca5a5;
+  --danger-foreground: #0b1020;
+
+  --ring: rgb(129 140 248 / 0.32);
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 1px 2px rgb(0 0 0 / 0.3), 0 10px 30px -20px rgb(0 0 0 / 0.8);
+  --shadow-lg: 0 2px 4px rgb(0 0 0 / 0.3), 0 20px 50px -24px rgb(0 0 0 / 0.9);
+}
+
+/* ==========================================================================
+   [編集] 追加したトークンを Tailwind ユーティリティとして使えるよう公開
+   （bg-surface / text-muted / border-line / bg-primary など）
+   ========================================================================== */
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-danger: var(--danger);
+  --color-danger-foreground: var(--danger-foreground);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ==========================================================================
+   [編集] ベーススタイル
+   - font-family を Arial 直指定から Geist（layout.tsx で読込）優先に変更
+   - 背景にごく淡いグラデーションを敷いて「白基調だが平坦でない」見た目に
+   ========================================================================== */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--background);
+    background-image:
+      radial-gradient(60rem 30rem at 15% -10%, rgb(79 70 229 / 0.07), transparent 70%),
+      radial-gradient(45rem 25rem at 95% 0%, rgb(14 165 233 / 0.06), transparent 70%);
+    background-repeat: no-repeat;
+    color: var(--foreground);
+    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .dark body {
+    background-image:
+      radial-gradient(60rem 30rem at 15% -10%, rgb(129 140 248 / 0.12), transparent 70%),
+      radial-gradient(45rem 25rem at 95% 0%, rgb(56 189 248 / 0.08), transparent 70%);
+  }
+
+  ::selection {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ==========================================================================
+   [編集] 共通コンポーネントクラスを新規追加
+   - 素の button / input / textarea がブラウザ既定表示のままだったため、
+     ボタン・カード・入力欄のスタイルをここで一元管理する
+   - Tailwind のプラグインは使わず、素の CSS + 上記トークンのみで記述
+   ========================================================================== */
+@layer components {
+  /* ---------- ボタン ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 2.5rem;
+    padding-inline: 1.125rem;
+    border: 1px solid transparent;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      box-shadow 0.15s ease,
+      transform 0.1s ease;
+  }
+
+  .btn:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  .btn-sm {
+    height: 2.125rem;
+    padding-inline: 0.875rem;
+    border-radius: 0.625rem;
+    font-size: 0.8125rem;
+  }
+
+  .btn-primary {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--primary-hover);
+  }
+
+  .btn-outline {
+    background-color: var(--surface);
+    border-color: var(--line);
+    color: var(--foreground);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn-outline:hover {
+    background-color: var(--surface-2);
+    border-color: var(--muted);
+  }
+
+  .btn-ghost {
+    background-color: transparent;
+    color: var(--muted);
+  }
+
+  .btn-ghost:hover {
+    background-color: var(--surface-2);
+    color: var(--foreground);
+  }
+
+  .btn-danger {
+    background-color: var(--danger);
+    color: var(--danger-foreground);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn-danger:hover {
+    background-color: var(--danger-hover);
+  }
+
+  /* ---------- カード ---------- */
+  .card {
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-md);
+  }
+
+  .card-hover {
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in oklab, var(--primary) 35%, var(--line));
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* ---------- フォーム ---------- */
+  .field-label {
+    display: block;
+    margin-bottom: 0.375rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .input {
+    display: block;
+    width: 100%;
+    background-color: var(--surface);
+    color: var(--foreground);
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    padding: 0.625rem 0.875rem;
+    font: inherit;
+    font-size: 0.9375rem;
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease,
+      background-color 0.15s ease;
+  }
+
+  .input::placeholder {
+    color: var(--muted);
+    opacity: 0.75;
+  }
+
+  .input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--ring);
+  }
+
+  .input-range {
+    width: 100%;
+    height: 1.5rem;
+    accent-color: var(--primary);
+    cursor: pointer;
+  }
+
+  /* ---------- その他 ---------- */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.1875rem 0.625rem;
+    border: 1px solid var(--line);
+    border-radius: 9999px;
+    background-color: var(--surface-2);
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .badge-primary {
+    background-color: color-mix(in oklab, var(--primary) 12%, transparent);
+    border-color: color-mix(in oklab, var(--primary) 30%, transparent);
+    color: var(--primary);
+  }
+
+  .divider {
+    height: 1px;
+    background-color: var(--line);
+  }
 }
