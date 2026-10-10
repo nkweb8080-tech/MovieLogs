@@ -1,9 +1,24 @@
 "use server"
+import path from "path";
 import bcrypt from "bcryptjs"
 import prisma from "@/app/Script/prosmaAction/prismaAction"
+import { readFile } from "fs/promises";
 import { Message } from "@/app/Common/Message"
 import { redirect } from "next/navigation"
-import { setLoginCookie } from "@/app/Script/cookieAction/cookieAction"
+import { setLoginCookie,resetLoginCookie } from "@/app/Script/cookieAction/cookieAction"
+
+
+export async function DummyLogin(){
+    const filePath = path.join(
+        process.cwd(),
+        "app",
+        "dummy.txt"
+    )
+
+    const email = await readFile(filePath, "utf8")
+    await setLoginCookie(email) 
+    redirect("/movie/TopPage")
+}
 
 export async function Login(formData: FormData) {
     try{
@@ -38,4 +53,8 @@ export async function Login(formData: FormData) {
         throw new Error(Message.COMMON.SYSTEM_ERROR);
     }
     redirect("/movie/TopPage")
+}
+
+export async function Logout() {
+    await resetLoginCookie()
 }

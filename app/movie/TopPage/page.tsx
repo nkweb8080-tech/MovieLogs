@@ -2,6 +2,8 @@ import Tab from '@/app/Common/TabComponents'
 import MyPage from '@/app/movie/MyPage/page'
 import SeachPage from '@/app/movie/SearchPage/page'
 import GoToButton from '@/app/Common/GoToPageButton'
+import LogoutButton from '@/app/Common/LogoutButton'
+import DummyLoginButton from '@/app/Common/DummyLoginButton'
 import { getUserInfo } from '@/app/Script/cookieAction/cookieAction'
 import type { SearchMovieProps } from "@/app/Types/SearchPageType"
 
@@ -10,7 +12,7 @@ export default async function TopPage({
 }: SearchMovieProps){
 
   const userInfo = String(await getUserInfo())
-
+  const isDev = process.env.NODE_ENV === "development";
   /* ------------------------------------------------------------------
      [編集] 見た目のみ変更（取得処理・タブ構成は従来どおり）
      - 素の h1 / h3 の羅列だった導入部をヒーローカードに整理
@@ -31,23 +33,32 @@ export default async function TopPage({
 
         <div className="mt-6 flex flex-wrap items-center gap-3">
           {userInfo ? (
-            <span className="badge">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="size-3.5"
-                aria-hidden="true"
-              >
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-              {userInfo}
-            </span>
+            <div>
+              <span className="badge">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="size-3.5"
+                  aria-hidden="true"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+                {userInfo}
+              </span>
+              <LogoutButton/>
+            </div>
+          ) : isDev ?(
+            <>
+              <span className="badge">未ログイン</span>
+              <GoToButton label="ログイン" goToPath='/movie/LoginPage'></GoToButton>
+              <DummyLoginButton/>
+            </>
           ) : (
             <>
               <span className="badge">未ログイン</span>
@@ -56,7 +67,6 @@ export default async function TopPage({
           )}
         </div>
       </section>
-
       <div className="mt-8">
         <Tab tabs={[
           {

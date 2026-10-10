@@ -57,3 +57,9 @@ export async function setLoginCookie(user:string) {
   //3時間だけCookieを保持
   cookieStore.set( "isLogin", String(user),{maxAge:60*60*3})
 }
+
+export async function resetLoginCookie() {
+  const cookieStore = await cookies()
+
+  cookieStore.set( "isLogin", "")
+}
