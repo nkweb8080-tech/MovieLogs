@@ -5,9 +5,7 @@ import { useRouter } from "next/navigation";
 export default function BackButton() {
   const router = useRouter();
 
-  /* --------------------------------------------------------------
-     [編集] 共通クラス（.btn）とアイコンを追加し、戻る動作を視覚化
-     -------------------------------------------------------------- */
+  //共通クラス（.btn）とアイコンを追加し、戻る動作を視覚化
   return (
     <button
       type="button"

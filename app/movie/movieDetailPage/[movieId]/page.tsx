@@ -28,14 +28,6 @@ export default async function MovieDetailPage({
     ? await getMovieDetail(movieId)
     : null;
 
-  /* ------------------------------------------------------------------
-     [編集] 見た目のみ変更（Cookie 制御・詳細取得・登録フォームの開閉は従来どおり）
-     - 全要素を 4 カラムグリッドに詰め込んでいたレイアウトを、
-       「ポスター＋作品情報」／「鑑賞記録」の2ブロック構成に再編
-     - 作品情報を定義リスト（dt/dd）に整理し、評価・ジャンルはバッジ表示
-     - 無効な className="width:400px" を削除し、登録フォームの幅を正しく制御
-     - 未ログイン時のみログイン導線を表示
-     ------------------------------------------------------------------ */
   return (
     <main className="mx-auto w-full max-w-5xl px-6 py-10">
         <div className="flex flex-wrap items-center justify-between gap-3">

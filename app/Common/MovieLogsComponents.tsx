@@ -20,13 +20,6 @@ export default async function MovieLogsComponent({mode,movieId}:MovieLogsCompone
 
   if(mode=="MyPage")
   {
-    /* ------------------------------------------------------------------
-       [編集] 見た目のみ変更（取得処理・遷移先は従来どおり）
-       - ページ内に埋め込まれるコンポーネントのため <main> → <div> へ変更
-       - 黒背景前提の text-white を廃止し、カラートークン（text-muted 等）へ
-       - 1件ずつ縦積みだった表示をカードグリッドに変更
-       - 記録が0件のときの空状態を追加
-       ------------------------------------------------------------------ */
     return(
       <div className="w-full">
         {!logs || logs.length === 0 ? (
@@ -72,13 +65,6 @@ export default async function MovieLogsComponent({mode,movieId}:MovieLogsCompone
     )
   }
 
-  /* --------------------------------------------------------------------
-     [編集] 見た目のみ変更（編集／削除の各 Server Action 呼び出しは従来どおり）
-     - ページ内に埋め込まれるコンポーネントのため <main> → <div> へ変更
-     - 入力欄に .input / .field-label、ボタンに .btn 系クラスを適用
-     - 削除確認部分を警告色のパネルとして区別できるようにした
-     - 記録が0件のときの空状態を追加
-     -------------------------------------------------------------------- */
   return(
     <div className="w-full">
       <h2 className="text-sm font-bold tracking-tight">あなたの鑑賞記録</h2>

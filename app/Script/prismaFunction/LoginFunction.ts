@@ -5,6 +5,7 @@ import prisma from "@/app/Script/prosmaAction/prismaAction"
 import { readFile } from "fs/promises";
 import { Message } from "@/app/Common/Message"
 import { redirect } from "next/navigation"
+import { revalidatePath } from "next/cache";
 import { setLoginCookie,resetLoginCookie } from "@/app/Script/cookieAction/cookieAction"
 
 
@@ -17,7 +18,7 @@ export async function DummyLogin(){
 
     const email = await readFile(filePath, "utf8")
     await setLoginCookie(email) 
-    redirect("/movie/TopPage")
+    revalidatePath("/movie/TopPage")
 }
 
 export async function Login(formData: FormData) {

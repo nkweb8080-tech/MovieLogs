@@ -13,11 +13,7 @@ export default async function TopPage({
 
   const userInfo = String(await getUserInfo())
   const isDev = process.env.NODE_ENV === "development";
-  /* ------------------------------------------------------------------
-     [編集] 見た目のみ変更（取得処理・タブ構成は従来どおり）
-     - 素の h1 / h3 の羅列だった導入部をヒーローカードに整理
-     - ログイン状態をバッジで表示し、未ログイン時のみログイン導線を強調
-     ------------------------------------------------------------------ */
+
   return (
     <main className="mx-auto w-full max-w-5xl px-6 py-10">
       <section className="card p-6 sm:p-8">

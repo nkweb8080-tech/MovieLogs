@@ -16,13 +16,6 @@ export default async function MovieSearchPage({
     ? await searchMovies(query, page)
     : null;
 
-  /* ------------------------------------------------------------------
-     [編集] 見た目のみ変更（検索処理・パラメータの扱いは従来どおり）
-     - TopPage のタブ内に埋め込まれるため <main> → <section> へ変更
-       （main の入れ子を避けるため）
-     - 検索欄をカード化、結果カードを白面＋ホバー効果付きに刷新
-     - 「該当なし」等のメッセージを空状態パネルとして表示
-     ------------------------------------------------------------------ */
   return (
     <section className="w-full">
       <h1 className="text-xl font-bold tracking-tight sm:text-2xl">
@@ -66,7 +59,6 @@ export default async function MovieSearchPage({
           検索
         </button>
       </form>
-
       {!query && (
         <p className="mt-6 rounded-2xl border border-dashed border-line px-6 py-10 text-center text-sm text-muted">
           映画タイトルを入力してください。

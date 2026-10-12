@@ -2,15 +2,9 @@ import BackButton from "@/app/Common/PageBackButton"
 import { registUser } from "@/app/Script/registFunction/RegistNewUser"
 
 export default async function WelcomePage(){
-    /* ------------------------------------------------------------------
-       [編集] 見た目のみ変更（registUser アクション・input の name は従来どおり）
-       - ログインページと同じ認証カードのデザインに統一
-       - label / .input / .btn を適用し、パスワード条件を補助文として追記
-       ------------------------------------------------------------------ */
+
     return (
         <main className="mx-auto w-full max-w-md px-6 py-10">
-            <BackButton/>
-
             <div className="card mt-4 p-6 sm:p-8">
                 <h1 className="text-2xl font-bold tracking-tight">新規登録</h1>
                 <p className="mt-1 text-sm text-muted">
@@ -35,6 +29,7 @@ export default async function WelcomePage(){
                     </div>
 
                     <button type="submit" className="btn btn-primary w-full">新規登録</button>
+                    <BackButton/>
                 </form>
             </div>
         </main>

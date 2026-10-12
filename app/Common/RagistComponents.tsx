@@ -9,12 +9,6 @@ type RegistComponentProps = {
 
 export default async function RegistComponent({userId,movieId,title}:RegistComponentProps){
 
-  /* ------------------------------------------------------------------
-     [編集] 見た目のみ変更（登録処理・hidden パラメータは従来どおり）
-     - ページ内に埋め込まれるコンポーネントのため <main> → <div> へ変更
-     - 入力欄に .input / .field-label、ボタンに .btn を適用
-     - textarea の cols 指定を外し、親幅に追従させる（レスポンシブ対応）
-     ------------------------------------------------------------------ */
   return(
     <div className="card p-5">
         <h2 className="text-sm font-bold tracking-tight">鑑賞記録を登録</h2>
