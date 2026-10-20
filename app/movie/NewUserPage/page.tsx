@@ -1,5 +1,5 @@
-import BackButton from "@/app/Common/PageBackButton"
-import { registUser } from "@/app/Script/registFunction/RegistNewUser"
+import BackButton from "@/app/Common/Components/PageBackButton"
+import { registUser } from "@/app/Script/Functions/RegistNewUser"
 
 export default async function WelcomePage(){
 

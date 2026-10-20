@@ -1,5 +1,4 @@
-import prisma from "@/app/Script/prosmaAction/prismaAction"
-import { Message } from "@/app/Common/Message"
+import prisma from "@/app/Script/Actions/prismaAction"
 
 export async function getMovieLogs(userId:string,movieId:string) {
 

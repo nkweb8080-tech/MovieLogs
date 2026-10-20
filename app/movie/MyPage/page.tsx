@@ -1,4 +1,4 @@
-import MovieLogsComponent from "@/app/Common/MovieLogsComponents"
+import MovieLogsComponent from "@/app/Common/Components/MovieLogsComponents"
 
 export default async function MyPage(){
 

@@ -1,5 +1,5 @@
 //日付入力が納得できない
-import { registMovieLog } from "@/app/Script/registFunction/RegistMovieLogs"
+import { registMovieLog } from "@/app/Script/Functions/RegistMovieLogs"
 
 type RegistComponentProps = {
     userId: string

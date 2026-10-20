@@ -1,3 +1,4 @@
+//日付形式変換
 export function formatDate(date: Date): string {
   return (
     date.getFullYear().toString() +

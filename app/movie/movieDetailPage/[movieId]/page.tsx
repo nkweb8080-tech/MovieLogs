@@ -2,11 +2,11 @@ import Image from "next/image"
 import { cookies } from "next/headers"
 import { getUserInfo } from '@/app/Script/cookieAction/cookieAction'
 import { setToggleModal } from "@/app/Script/cookieAction/cookieAction"
-import { getMovieDetail } from "@/app/Script/anyApiFunction/tmdbApi"
-import MovieLogsComponent from "@/app/Common/MovieLogsComponents"
-import GoToButton from "@/app/Common/GoToPageButton"
-import BackButton from "@/app/Common/PageBackButton"
-import RegistComponent from "@/app/Common/RagistComponents"
+import { getMovieDetail } from "@/app/Script/APIs/tmdbApi"
+import MovieLogsComponent from "@/app/Common/Components/MovieLogsComponents"
+import GoToButton from "@/app/Common/Components/GoToPageButton"
+import BackButton from "@/app/Common/Components/PageBackButton"
+import RegistComponent from "@/app/Common/Components/RagistComponents"
 
 type MovieProps = {
   params: Promise<{

@@ -1,5 +1,5 @@
 "use client"
-import { Logout } from "@/app/Script/prismaFunction/LoginFunction"
+import { Logout } from "@/app/Script/Functions/LoginFunction"
 
 export default function LogoutButton(){
 

@@ -1,5 +1,5 @@
 "use client"
-import { DummyLogin } from "@/app/Script/prismaFunction/LoginFunction"
+import { DummyLogin } from "@/app/Script/Functions/LoginFunction"
 
 export default function DummyLoginButton(){
     return (

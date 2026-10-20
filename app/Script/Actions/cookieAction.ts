@@ -1,27 +1,10 @@
+/*
+UIの状態変化に関するCookieの登録・参照をまとめたファイル
+TODO：ファイルのリネーム
+*/ 
 "use server";
 import { redirect } from "next/navigation"
-import { cookies } from "next/headers"
-
-//Cookieへの値設定
-async function setCookie(cookieName:string,value:string){
-  const cookieStore = await cookies()
-
-  //XSS,CSRF対策の属性付与
-  cookieStore.set( cookieName, value,{
-    maxAge:60*60*3,
-    httpOnly: true,
-    secure: true,
-    sameSite: "strict",
-    path: "/",
-  })
-}
-
-//Cookieの値取得
-async function getCookie(cookieName:string){
-  const cookieStore = await cookies()
-
-  return cookieStore.get(cookieName)
-}
+import { setCookie,getCookie,deleteCookie } from "@/app/Script/Actions/sessionAction"
 
 //モーダルの展開処理をCookieで制御
 export async function setToggleModal() {
@@ -36,13 +19,6 @@ export async function setToggleModal() {
 
     await setCookie( "showModal", String(!currentModal))
   }
-}
-
-//ユーザ情報の取得処理
-export async function getUserInfo(){
-  const isLogin = await getCookie("isLogin")
-
-  return isLogin?.value ? isLogin?.value : ""
 }
 
 //鑑賞記録編集後、編集モードを終了させるため、Cookie情報を更新
@@ -76,5 +52,5 @@ export async function setLoginCookie(user:string) {
 
 //ログイン状況を削除（仮）
 export async function resetLoginCookie() {
-  await setCookie( "isLogin", "")
+  await deleteCookie( "isLogin")
 }

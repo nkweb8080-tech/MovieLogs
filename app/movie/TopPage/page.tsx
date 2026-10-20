@@ -1,9 +1,9 @@
-import Tab from '@/app/Common/TabComponents'
+import Tab from '@/app/Common/Components/TabComponents'
 import MyPage from '@/app/movie/MyPage/page'
 import SeachPage from '@/app/movie/SearchPage/page'
-import GoToButton from '@/app/Common/GoToPageButton'
-import LogoutButton from '@/app/Common/LogoutButton'
-import DummyLoginButton from '@/app/Common/DummyLoginButton'
+import GoToButton from '@/app/Common/Components/GoToPageButton'
+import LogoutButton from '@/app/Common/Components/LogoutButton'
+import DummyLoginButton from '@/app/Common/Components/DummyLoginButton'
 import { getUserInfo } from '@/app/Script/cookieAction/cookieAction'
 import type { SearchMovieProps } from "@/app/Types/SearchPageType"
 

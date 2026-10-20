@@ -1,6 +1,6 @@
-import GoToButton from '@/app/Common/GoToPageButton'
-import BackButton from "@/app/Common/PageBackButton"
-import { Login } from "@/app/Script/prismaFunction/LoginFunction"
+import GoToButton from '@/app/Common/Components/GoToPageButton'
+import BackButton from "@/app/Common/Components/PageBackButton"
+import { Login } from "@/app/Script/Functions/LoginFunction"
 
 export default async function LoginPage(){
 

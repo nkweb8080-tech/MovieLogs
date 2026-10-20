@@ -1,12 +1,12 @@
 "use server"
 import path from "path";
 import bcrypt from "bcryptjs"
-import prisma from "@/app/Script/prosmaAction/prismaAction"
+import prisma from "@/app/Script/Actions/prismaAction"
 import { readFile } from "fs/promises";
 import { Message } from "@/app/Common/Message"
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache";
-import { setLoginCookie,resetLoginCookie } from "@/app/Script/cookieAction/cookieAction"
+import { setLoginCookie,resetLoginCookie } from "@/app/Script/Actions/cookieAction"
 
 
 export async function DummyLogin(){

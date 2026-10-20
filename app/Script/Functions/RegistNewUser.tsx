@@ -1,6 +1,6 @@
 "use server"
 import bcrypt from "bcryptjs"
-import prisma from "@/app/Script/prosmaAction/prismaAction"
+import prisma from "@/app/Script/Actions/prismaAction"
 import { Message } from "@/app/Common/Message"
 import { redirect } from "next/navigation"
 

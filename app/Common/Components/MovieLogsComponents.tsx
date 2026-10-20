@@ -1,9 +1,10 @@
 //鑑賞記録の表示方法はいくつか候補があるため、コンポーネントで分けておく
 import Link from "next/link";
 import { cookies } from "next/headers"
-import { getUserInfo,setEditMode,setDeleteMode } from '@/app/Script/cookieAction/cookieAction'
-import { getMovieLogs } from "@/app/Script/prismaFunction/MypageFunction"
-import { updateMovieLog,deleteMovieLog } from "@/app/Script/registFunction/RegistMovieLogs"
+import { setEditMode,setDeleteMode } from '@/app/Script/Actions/cookieAction'
+import { getUserInfo } from '@/app/Script/Actions/sessionAction'
+import { getMovieLogs } from "@/app/Script/Functions/MypageFunction"
+import { updateMovieLog,deleteMovieLog } from "@/app/Script/Functions/RegistMovieLogs"
 
 type MovieLogsComponentProps = {
   mode : string,

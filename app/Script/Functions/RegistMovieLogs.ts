@@ -1,9 +1,9 @@
 "use server"
-import prisma from "@/app/Script/prosmaAction/prismaAction"
+import prisma from "@/app/Script/Actions/prismaAction"
 import { revalidatePath } from "next/cache";
 import { Message } from "@/app/Common/Message"
 import { formatDate } from "@/app/Common/CommonConst"
-import { resetEditMode } from '@/app/Script/cookieAction/cookieAction'
+import { resetEditMode } from '@/app/Script/Actions/cookieAction'
 
 export async function registMovieLog(formData: FormData) {
     try
