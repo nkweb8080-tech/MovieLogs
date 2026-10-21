@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { cookies } from "next/headers"
 import { setEditMode,setDeleteMode } from '@/app/Script/Actions/cookieAction'
-import { getUserInfo } from '@/app/Script/Actions/sessionAction'
 import { getMovieLogs } from "@/app/Script/Functions/MypageFunction"
 import { updateMovieLog,deleteMovieLog } from "@/app/Script/Functions/RegistMovieLogs"
 
@@ -13,8 +12,7 @@ type MovieLogsComponentProps = {
 
 export default async function MovieLogsComponent({mode,movieId}:MovieLogsComponentProps){
   const cookieStore = await cookies()
-  const userId = String(await getUserInfo())
-  const logs = (mode=="MyPage")? await getMovieLogs(userId,"") : await getMovieLogs(userId,movieId)
+  const logs = (mode=="MyPage")? await getMovieLogs("") : await getMovieLogs(movieId)
   const editId = cookieStore.get("editId")?.value
   const isEdit = cookieStore.get("isEdit")?.value === "true"
   const isDelete = cookieStore.get("isDelete")?.value === "true"

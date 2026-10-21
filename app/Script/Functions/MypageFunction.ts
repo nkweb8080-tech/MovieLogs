@@ -1,8 +1,10 @@
 import prisma from "@/app/Script/Actions/prismaAction"
+import { getUserInfo } from '@/app/Script/Actions/sessionAction'
 
-export async function getMovieLogs(userId:string,movieId:string) {
+export async function getMovieLogs(movieId:string) {
 
-    if(!userId)return null;
+    const userId = await getUserInfo()
+    if(userId === "") return null;
 
     // 鑑賞記録取得
     if(!movieId){

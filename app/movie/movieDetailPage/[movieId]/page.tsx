@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { cookies } from "next/headers"
-import { getUserInfo } from '@/app/Script/cookieAction/cookieAction'
-import { setToggleModal } from "@/app/Script/cookieAction/cookieAction"
+import { getUserInfo } from '@/app/Script/Actions/sessionAction'
+import { setToggleModal } from "@/app/Script/Actions/cookieAction"
 import { getMovieDetail } from "@/app/Script/APIs/tmdbApi"
 import MovieLogsComponent from "@/app/Common/Components/MovieLogsComponents"
 import GoToButton from "@/app/Common/Components/GoToPageButton"
@@ -116,7 +116,7 @@ export default async function MovieDetailPage({
 
               {showFlag && result &&(
                 <div className="mt-4 max-w-md">
-                  <RegistComponent userId={userId} movieId={movieId} title={result?.title}/>
+                  <RegistComponent movieId={movieId} title={result?.title}/>
                 </div>
               )}
             </div>

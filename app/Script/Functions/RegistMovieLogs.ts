@@ -4,11 +4,12 @@ import { revalidatePath } from "next/cache";
 import { Message } from "@/app/Common/Message"
 import { formatDate } from "@/app/Common/CommonConst"
 import { resetEditMode } from '@/app/Script/Actions/cookieAction'
+import { getUserInfo } from '@/app/Script/Actions/sessionAction'
 
 export async function registMovieLog(formData: FormData) {
     try
     {
-        const userId = String(formData.get("userId"))
+        const userId = await getUserInfo()
         const movieId = String(formData.get("movieId"))
         const title = String(formData.get("title"))
         const watchDate = String(formData.get("watchDate"))
@@ -46,6 +47,7 @@ export async function registMovieLog(formData: FormData) {
 export async function updateMovieLog(formData: FormData) {
     try
     {
+        const userId = await getUserInfo()
         const movieId = String(formData.get("movieId"))
         const movieLogId = String(formData.get("movieLogId"))
         const watchDate = String(formData.get("watchDate"))
@@ -58,7 +60,7 @@ export async function updateMovieLog(formData: FormData) {
         const record = await prisma.movieRecord.update({
             where: {
                 id: movieLogId,
-
+                userId:userId,
             },
             data: {
                 watchedAt:watchedAt,
@@ -83,6 +85,7 @@ export async function updateMovieLog(formData: FormData) {
 export async function deleteMovieLog(formData: FormData) {
     try
     {
+        const userId = await getUserInfo()
         const movieId = String(formData.get("movieId"))
         const movieLogId = String(formData.get("movieLogId"))
         let date = new Date();
@@ -91,7 +94,8 @@ export async function deleteMovieLog(formData: FormData) {
         const record = await prisma.movieRecord.update({
             where: {
                 id: movieLogId,
-                movieId:movieId
+                userId:userId,
+                movieId:movieId,
             },
             data: {
                 updatedAt:date,

@@ -12,7 +12,6 @@ export default async function TopPage({
 }: SearchMovieProps){
 
   const userInfo = String(await getUserInfo())
-  const isDev = process.env.NODE_ENV === "development";
 
   return (
     <main className="mx-auto w-full max-w-5xl px-6 py-10">
@@ -49,16 +48,11 @@ export default async function TopPage({
               </span>
               <LogoutButton/>
             </div>
-          ) : isDev ?(
-            <>
-              <span className="badge">未ログイン</span>
-              <GoToButton label="ログイン" goToPath='/movie/LoginPage'></GoToButton>
-              <DummyLoginButton/>
-            </>
           ) : (
             <>
               <span className="badge">未ログイン</span>
               <GoToButton label="ログイン" goToPath='/movie/LoginPage'></GoToButton>
+              <DummyLoginButton/>
             </>
           )}
         </div>
