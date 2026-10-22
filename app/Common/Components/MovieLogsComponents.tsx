@@ -1,25 +1,26 @@
 //鑑賞記録の表示方法はいくつか候補があるため、コンポーネントで分けておく
 import Link from "next/link";
-import { cookies } from "next/headers"
 import { setEditMode,setDeleteMode } from '@/app/Script/Actions/cookieAction'
-import { getUserInfo } from '@/app/Script/Actions/sessionAction'
+import { getUserInfo,getCookie } from '@/app/Script/Actions/sessionAction'
 import { getMovieLogs } from "@/app/Script/Functions/MypageFunction"
 import { updateMovieLog,deleteMovieLog } from "@/app/Script/Functions/RegistMovieLogs"
+import { toDateInputValue } from "@/app/Common/CommonConst"
 
+// Refactor: 表示モードを文字列から取り得る値のみに限定
 type MovieLogsComponentProps = {
-  mode : string,
+  mode : "MyPage" | "MovieDetailPage",
   movieId : string
 }
 
 export default async function MovieLogsComponent({mode,movieId}:MovieLogsComponentProps){
-  const cookieStore = await cookies()
-  const userId = String(await getUserInfo())
-  const logs = (mode=="MyPage")? await getMovieLogs(userId,"") : await getMovieLogs(userId,movieId)
-  const editId = cookieStore.get("editId")?.value
-  const isEdit = cookieStore.get("isEdit")?.value === "true"
-  const isDelete = cookieStore.get("isDelete")?.value === "true"
+  const userId = await getUserInfo()
+  // Refactor: モードによる取得処理の分岐を引数のみの切り替えに整理
+  const logs = await getMovieLogs(userId, mode === "MyPage" ? undefined : movieId)
+  const editId = (await getCookie("editId"))?.value
+  const isEdit = (await getCookie("isEdit"))?.value === "true"
+  const isDelete = (await getCookie("isDelete"))?.value === "true"
 
-  if(mode=="MyPage")
+  if(mode==="MyPage")
   {
     return(
       <div className="w-full">
@@ -44,7 +45,7 @@ export default async function MovieLogsComponent({mode,movieId}:MovieLogsCompone
                       <div className="flex items-center gap-2">
                         <dt className="w-12 shrink-0">鑑賞日</dt>
                         <dd className="font-medium text-foreground">
-                          {log.watchedAt.toISOString().split('T')[0]}
+                          {toDateInputValue(log.watchedAt)}
                         </dd>
                       </div>
                       <div className="flex items-center gap-2">
@@ -54,8 +55,7 @@ export default async function MovieLogsComponent({mode,movieId}:MovieLogsCompone
                         </dd>
                       </div>
                     </dl>
-
-                    <input type="hidden" name="movieId" value={log.movieId} />
+                    {/* Refactor: form 外で使われていなかった hidden input を削除 */}
                   </div>
                 </Link>
               </article>
@@ -82,7 +82,7 @@ export default async function MovieLogsComponent({mode,movieId}:MovieLogsCompone
               className="card overflow-hidden"
             >
               <div className="p-5">
-                {isEdit && editId==log.id ?(
+                {isEdit && editId===log.id ?(
                   <div className="space-y-4">
                     <form action={updateMovieLog} className="space-y-4">
                       <div>
@@ -91,7 +91,7 @@ export default async function MovieLogsComponent({mode,movieId}:MovieLogsCompone
                           id={`watchDate-${log.id}`}
                           type="date"
                           name="watchDate"
-                          defaultValue={(log.watchedAt.toISOString().split('T')[0])}
+                          defaultValue={toDateInputValue(log.watchedAt)}
                           className="input"
                         />
                       </div>
@@ -119,7 +119,8 @@ export default async function MovieLogsComponent({mode,movieId}:MovieLogsCompone
                             name="comment"
                             placeholder="コメントを記入"
                             rows={4}
-                            defaultValue={String(log.review)}
+                            // Fix: review が null の場合に "null" と表示されないよう変更
+                            defaultValue={log.review ?? ""}
                             className="input resize-y"/>
                       </div>
 
@@ -164,7 +165,7 @@ export default async function MovieLogsComponent({mode,movieId}:MovieLogsCompone
                     <div className="space-y-2 text-sm">
                       <p className="flex items-center gap-2 text-muted">
                         <span className="w-14 shrink-0 text-xs font-semibold">鑑賞日</span>
-                        <span className="font-medium text-foreground">{log.watchedAt.toISOString().split('T')[0]}</span>
+                        <span className="font-medium text-foreground">{toDateInputValue(log.watchedAt)}</span>
                       </p>
                       <p className="flex items-center gap-2 text-muted">
                         <span className="w-14 shrink-0 text-xs font-semibold">評価</span>
@@ -172,7 +173,7 @@ export default async function MovieLogsComponent({mode,movieId}:MovieLogsCompone
                       </p>
                       <div className="text-muted">
                         <span className="text-xs font-semibold">コメント</span>
-                        <p className="mt-1 whitespace-pre-wrap leading-relaxed text-foreground">{String(log.review)}</p>
+                        <p className="mt-1 whitespace-pre-wrap leading-relaxed text-foreground">{log.review ?? ""}</p>
                       </div>
                     </div>
                     <div>

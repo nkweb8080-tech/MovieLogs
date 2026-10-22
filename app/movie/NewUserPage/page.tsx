@@ -19,13 +19,14 @@ export default async function WelcomePage(){
 
                     <div>
                         <label className="field-label" htmlFor="password">パスワード</label>
-                        <input id="password" type="text" name="password" placeholder="パスワード" className="input"/>
+                        {/* Security: パスワードが画面に平文表示されないよう type="password" に変更 */}
+                        <input id="password" type="password" name="password" placeholder="パスワード" autoComplete="new-password" className="input"/>
                         <p className="mt-1.5 text-xs text-muted">8文字以上で入力してください。</p>
                     </div>
 
                     <div>
                         <label className="field-label" htmlFor="checkPassword">確認用</label>
-                        <input id="checkPassword" type="text" name="checkPassword" placeholder="もう一度入力してください" className="input"/>
+                        <input id="checkPassword" type="password" name="checkPassword" placeholder="もう一度入力してください" autoComplete="new-password" className="input"/>
                     </div>
 
                     <button type="submit" className="btn btn-primary w-full">新規登録</button>

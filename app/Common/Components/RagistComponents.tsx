@@ -1,13 +1,13 @@
 //日付入力が納得できない
 import { registMovieLog } from "@/app/Script/Functions/RegistMovieLogs"
 
+// Security: 登録者IDはサーバ側でセッションから取得するため userId を受け取らないよう変更
 type RegistComponentProps = {
-    userId: string
     movieId: number
     title: string
 }
 
-export default async function RegistComponent({userId,movieId,title}:RegistComponentProps){
+export default async function RegistComponent({movieId,title}:RegistComponentProps){
 
   return(
     <div className="card p-5">
@@ -40,7 +40,6 @@ export default async function RegistComponent({userId,movieId,title}:RegistCompo
                     className="input resize-y"/>
             </div>
 
-            <input type="hidden" name="userId" value={userId} />
             <input type="hidden" name="movieId" value={movieId} />
             <input type="hidden" name="title" value={title} />
 

@@ -1,15 +1,18 @@
 import Image from "next/image"
 import Link from "next/link"
-import { searchMovies } from "@/app/Script/APIs/tmdbApi"
-import type { SearchMovieProps } from "@/app/Types/SearchPageType"
+import { searchMovies, TMDB_MAX_PAGE } from "@/app/Script/APIs/tmdbApi"
+import { parseIntInRange } from "@/app/Common/Validation"
+import { firstParam, type SearchMovieProps } from "@/app/Types/SearchPageType"
 
 export default async function MovieSearchPage({
   searchParams,
 }: SearchMovieProps) {
   //検索処理用パラメータ
   const params = await searchParams;
-  const query = params.query?.trim() ?? "";
-  const page = Number(params.page ?? "1");
+  // Security: ?query=a&query=b のような配列指定で trim() が例外にならないよう先頭の値のみ使用
+  const query = firstParam(params.query)?.trim() ?? "";
+  // Security: クエリパラメータのページ番号を検証し、不正値は1ページ目とする
+  const page = parseIntInRange(firstParam(params.page) ?? "1", 1, TMDB_MAX_PAGE) ?? 1;
 
   //検索処理
   const result = query

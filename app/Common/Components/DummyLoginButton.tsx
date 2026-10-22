@@ -1,4 +1,4 @@
-"use client"
+// Refactor: Server Action を呼ぶだけのフォームのため "use client" を外し、クライアントJSを削減
 import { DummyLogin } from "@/app/Script/Functions/LoginFunction"
 
 export default function DummyLoginButton(){

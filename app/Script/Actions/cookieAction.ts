@@ -1,16 +1,18 @@
 /*
 UIの状態変化に関するCookieの登録・参照をまとめたファイル
 TODO：ファイルのリネーム
-*/ 
+*/
 "use server";
+import { setCookie,getCookie,getUserInfo } from "@/app/Script/Actions/sessionAction"
 import { redirect } from "next/navigation"
-import { setCookie,getCookie,deleteCookie } from "@/app/Script/Actions/sessionAction"
+import { getFormString, isValidRecordId } from "@/app/Common/Validation"
 
 //モーダルの展開処理をCookieで制御
 export async function setToggleModal() {
-  const isLogin = await getCookie("isLogin")
+  // Security: Cookieの有無ではなく署名検証済みのログイン情報で判定
+  const userId = await getUserInfo()
 
-  if(!isLogin){
+  if(!userId){
     redirect("/movie/LoginPage")
   }
   else{
@@ -30,10 +32,12 @@ export async function resetEditMode() {
 //編集モードをCookie情報を登録することで制御
 export async function setEditMode(formData: FormData) {
   const currentEditId = await getCookie("editId")
-  const editId = String(formData.get("editId"))
-  const isEdit = currentEditId?.value != editId
+  // Security: 未送信時の "null" 文字列化や過大な値をCookieへ保存しないよう検証
+  const rawEditId = getFormString(formData, "editId")
+  const editId = isValidRecordId(rawEditId) ? rawEditId : ""
+  const isEdit = currentEditId?.value !== editId
 
-  await setCookie( "editId", String(editId))
+  await setCookie( "editId", editId)
   await setCookie( "isEdit", String(isEdit))
 }
 
@@ -45,12 +49,4 @@ export async function setDeleteMode() {
   await setCookie( "isDelete", String(!isdelete))
 }
 
-//ログイン状況を保持取得
-export async function setLoginCookie(user:string) {
-  await setCookie( "isLogin", String(user))
-}
-
-//ログイン状況を削除（仮）
-export async function resetLoginCookie() {
-  await deleteCookie( "isLogin")
-}
+// Security: 任意のユーザ名でログインCookieを設定できる Server Action（setLoginCookie / resetLoginCookie）を廃止し、sessionAction のサーバ専用関数へ移管

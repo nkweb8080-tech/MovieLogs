@@ -4,14 +4,15 @@ import SeachPage from '@/app/movie/SearchPage/page'
 import GoToButton from '@/app/Common/Components/GoToPageButton'
 import LogoutButton from '@/app/Common/Components/LogoutButton'
 import DummyLoginButton from '@/app/Common/Components/DummyLoginButton'
-import { getUserInfo } from '@/app/Script/cookieAction/cookieAction'
+import { getUserInfo } from '@/app/Script/Actions/sessionAction'
 import type { SearchMovieProps } from "@/app/Types/SearchPageType"
 
 export default async function TopPage({
   searchParams,
 }: SearchMovieProps){
 
-  const userInfo = String(await getUserInfo())
+  // Refactor: getUserInfo は string を返すため冗長な String() 変換を削除
+  const userInfo = await getUserInfo()
   const isDev = process.env.NODE_ENV === "development";
 
   return (
@@ -49,16 +50,12 @@ export default async function TopPage({
               </span>
               <LogoutButton/>
             </div>
-          ) : isDev ?(
-            <>
-              <span className="badge">未ログイン</span>
-              <GoToButton label="ログイン" goToPath='/movie/LoginPage'></GoToButton>
-              <DummyLoginButton/>
-            </>
           ) : (
+            // Refactor: 開発環境かどうかで重複していた未ログイン表示を共通化
             <>
               <span className="badge">未ログイン</span>
               <GoToButton label="ログイン" goToPath='/movie/LoginPage'></GoToButton>
+              {isDev && <DummyLoginButton/>}
             </>
           )}
         </div>

@@ -15,12 +15,13 @@ export default async function LoginPage(){
                 <form action={ Login } className="mt-6 space-y-4">
                     <div>
                         <label className="field-label" htmlFor="email">ユーザID</label>
-                        <input id="email" type="text" name="email" placeholder="sample@gamil.com" className="input"/>
+                        <input id="email" type="text" name="email" placeholder="sample@gamil.com" autoComplete="username" className="input"/>
                     </div>
 
                     <div>
                         <label className="field-label" htmlFor="password">パスワード</label>
-                        <input id="password" type="text" name="password" placeholder="パスワード" className="input"/>
+                        {/* Security: パスワードが画面に平文表示されないよう type="password" に変更 */}
+                        <input id="password" type="password" name="password" placeholder="パスワード" autoComplete="current-password" className="input"/>
                     </div>
 
                     <button type="submit" className="btn btn-primary w-full">ログイン</button>

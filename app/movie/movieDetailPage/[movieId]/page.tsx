@@ -1,32 +1,36 @@
 import Image from "next/image"
-import { cookies } from "next/headers"
-import { getUserInfo } from '@/app/Script/cookieAction/cookieAction'
-import { setToggleModal } from "@/app/Script/cookieAction/cookieAction"
+import { notFound } from "next/navigation"
+// Fix: フォルダ整理後に存在しなくなった import パスを修正
+import { getUserInfo, getCookie } from '@/app/Script/Actions/sessionAction'
+import { setToggleModal } from "@/app/Script/Actions/cookieAction"
 import { getMovieDetail } from "@/app/Script/APIs/tmdbApi"
+import { parseTmdbMovieId } from "@/app/Common/Validation"
 import MovieLogsComponent from "@/app/Common/Components/MovieLogsComponents"
 import GoToButton from "@/app/Common/Components/GoToPageButton"
 import BackButton from "@/app/Common/Components/PageBackButton"
 import RegistComponent from "@/app/Common/Components/RagistComponents"
 
+// Refactor: 動的ルートのパラメータは実際には文字列のため型を修正
 type MovieProps = {
   params: Promise<{
-    movieId: number;
+    movieId: string;
   }>;
 }
 
 export default async function MovieDetailPage({
     params,
 }:MovieProps){
-  const cookieStore = await cookies()
-  const { movieId } = await params
+  // Security: URLパラメータの映画IDを検証し、不正値は404とする
+  const movieId = parseTmdbMovieId((await params).movieId)
+  if (movieId === null) {
+    notFound()
+  }
 
-  const showFlag = cookieStore.get("showModal")?.value === "true"
-  const userId = String(await getUserInfo())
+  const showFlag = (await getCookie("showModal"))?.value === "true"
+  const userId = await getUserInfo()
 
   //詳細情報検索処理
-  const result = movieId
-    ? await getMovieDetail(movieId)
-    : null;
+  const result = await getMovieDetail(movieId)
 
   return (
     <main className="mx-auto w-full max-w-5xl px-6 py-10">
@@ -42,10 +46,11 @@ export default async function MovieDetailPage({
         <section className="card mt-4 overflow-hidden p-5 sm:p-7">
           <div className="grid gap-7 sm:grid-cols-[minmax(0,200px)_minmax(0,1fr)]">
             <div className="overflow-hidden rounded-xl border border-line">
-              {result?.poster_path ? (
+              {/* Refactor: result は必ず取得済みのため不要なオプショナルチェーンを削除 */}
+              {result.poster_path ? (
                 <Image
-                  src={`https://image.tmdb.org/t/p/w500${result?.poster_path}`}
-                  alt={`${result?.title}のポスター`}
+                  src={`https://image.tmdb.org/t/p/w500${result.poster_path}`}
+                  alt={`${result.title}のポスター`}
                   width={500}
                   height={750}
                   loading="eager"
@@ -60,11 +65,11 @@ export default async function MovieDetailPage({
 
             <div>
               <h2 className="text-2xl font-bold leading-tight tracking-tight">
-                {result?.title}
+                {result.title}
               </h2>
 
-              {result?.original_title && result?.original_title !== result?.title ? (
-                <p className="mt-1 text-sm text-muted">{result?.original_title}</p>
+              {result.original_title && result.original_title !== result.title ? (
+                <p className="mt-1 text-sm text-muted">{result.original_title}</p>
               ) : (
                 <></>
               )}
@@ -80,10 +85,10 @@ export default async function MovieDetailPage({
                   >
                     <path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8-4.3-4.1 5.9-.9z" />
                   </svg>
-                  {result?.vote_average} / 10
+                  {result.vote_average} / 10
                 </span>
 
-                {result?.genre_ids && result.genre_ids.length > 0 ? (
+                {result.genre_ids && result.genre_ids.length > 0 ? (
                   result.genre_ids.map((genreId) => (
                     <span key={genreId} className="badge">{genreId}</span>
                   ))
@@ -95,14 +100,14 @@ export default async function MovieDetailPage({
               <dl className="mt-5 space-y-2 text-sm">
                 <div className="flex gap-3">
                   <dt className="w-20 shrink-0 text-xs font-semibold text-muted">公開日</dt>
-                  <dd>{result?.release_date ? result?.release_date : "不明"}</dd>
+                  <dd>{result.release_date ? result.release_date : "不明"}</dd>
                 </div>
               </dl>
 
-              {result?.overview ? (
+              {result.overview ? (
                 <div className="mt-5">
                   <p className="text-xs font-semibold text-muted">あらすじ</p>
-                  <p className="mt-1.5 text-sm leading-relaxed">{result?.overview}</p>
+                  <p className="mt-1.5 text-sm leading-relaxed">{result.overview}</p>
                 </div>
               ) : (
                 <></>
@@ -114,9 +119,10 @@ export default async function MovieDetailPage({
                 </button>
               </form>
 
-              {showFlag && result &&(
+              {showFlag && userId &&(
                 <div className="mt-4 max-w-md">
-                  <RegistComponent userId={userId} movieId={movieId} title={result?.title}/>
+                  {/* Security: 登録者IDはサーバ側でセッションから取得するため、フォームへ渡さないよう変更 */}
+                  <RegistComponent movieId={movieId} title={result.title}/>
                 </div>
               )}
             </div>

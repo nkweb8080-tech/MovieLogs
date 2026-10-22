@@ -13,7 +13,9 @@ type TabProps = {
 
 //タブ機能
 const Tabs = ({ tabs }: TabProps) => {
-    const [activeTab, setActiveTab] = useState(tabs[0])
+    // Fix: タブ要素そのものを state に保持すると再描画後も古い content が残るため、インデックスを保持
+    const [activeIndex, setActiveIndex] = useState(0)
+    const activeTab = tabs[activeIndex] ?? tabs[0]
 
     return (
         <div>
@@ -22,8 +24,8 @@ const Tabs = ({ tabs }: TabProps) => {
                 aria-label="表示切り替え"
                 className="inline-flex gap-1 rounded-2xl border border-line bg-surface-2 p-1"
             >
-                {tabs.map((tab) => {
-                    const isActive = activeTab.label === tab.label
+                {tabs.map((tab, index) => {
+                    const isActive = activeTab?.label === tab.label
 
                     return (
                         <button
@@ -31,7 +33,7 @@ const Tabs = ({ tabs }: TabProps) => {
                             type="button"
                             role="tab"
                             aria-selected={isActive}
-                            onClick = {() => setActiveTab(tab)}
+                            onClick = {() => setActiveIndex(index)}
                             className={`btn btn-sm rounded-xl ${
                                 isActive
                                     ? 'bg-surface text-foreground shadow-sm'
@@ -44,7 +46,7 @@ const Tabs = ({ tabs }: TabProps) => {
                 })}
             </div>
             <div className="mt-6">
-                {activeTab.content}
+                {activeTab?.content}
             </div>
         </div>
     )

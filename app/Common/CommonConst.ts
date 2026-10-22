@@ -9,3 +9,8 @@ export function formatDate(date: Date): string {
     String(date.getSeconds()).padStart(2, "0")
   );
 }
+
+// Refactor: 画面で重複していた日付表示（YYYY-MM-DD）変換を共通化
+export function toDateInputValue(date: Date): string {
+  return date.toISOString().split("T")[0];
+}

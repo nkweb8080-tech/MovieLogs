@@ -18,6 +18,10 @@ export const Message = {
         ERROR_KETA_PASSWORD:"パスワードは8文字以上にしてください",
         ERROR_CHECK_PASSWORD:"入力したパスワードが異なります",
         ERROR_EXIST_EMAIL:"このメールアドレスは既に登録されています",
-        YOU_ARE_NOT_USER:"ユーザIDまたはパスワードが異なります"
+        YOU_ARE_NOT_USER:"ユーザIDまたはパスワードが異なります",
+        // Security: 入力検証の追加に伴うメッセージを追加
+        ERROR_FORMAT_EMAIL:"メールアドレスの形式が正しくありません",
+        ERROR_MAX_PASSWORD:"パスワードは72バイト以内にしてください",
+        INVALID_INPUT:"入力内容が正しくありません",
     }
 }
