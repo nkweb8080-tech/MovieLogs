@@ -58,18 +58,19 @@ export async function registUser(formData: FormData) {
     12
   );
 
+  // ポートフォリオサイトのため、登録は行えないようにコメントアウトする
   // Refactor: createdAt/updatedAt はスキーマの @default(now()) / @updatedAt に任せる
-  await prisma.user.create({
-    data: {
-      name,
-      email,
-      passwordHash,
-    },
-  });
+  // await prisma.user.create({
+  //   data: {
+  //     name,
+  //     email,
+  //     passwordHash,
+  //   },
+  // });
   }
   catch(e)
   {
-    throwSystemError(e)
+     throwSystemError(e)
   }
   // Fix: redirect は例外で遷移するため try の外へ移動（登録成功時にシステムエラー扱いになる不具合を修正）
   redirect("/movie/LoginPage")
