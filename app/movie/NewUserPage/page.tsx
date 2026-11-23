@@ -30,6 +30,9 @@ export default async function WelcomePage(){
                     </div>
 
                     <button type="submit" className="btn btn-primary w-full">新規登録</button>
+                    <p className="mt-1 text-sm text-muted">
+                        ※こちらはポートフォリオサイトになるため新規登録は行えません。
+                    </p>
                     <BackButton/>
                 </form>
             </div>
